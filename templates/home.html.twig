@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block home %}
+<!--The content below is only a placeholder and can be replaced.-->
+<!DOCTYPE html>
+<html>
+<head>
+  {% block head %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 3 | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/">
+  {% endblock %}
+</head>
+<body class="hold-transition sidebar-mini">
+  {% block body %}
+  <app-root></app-root>
+  {% endblock %}
+  {% block javascripts %}
+  <script type="text/javascript" src="/runtime.js"></script>
+  <script type="text/javascript" src="/polyfills.js"></script>
+  <script type="text/javascript" src="/styles.js"></script>
+  <script type="text/javascript" src="/scripts.js"></script>
+  <script type="text/javascript" src="/vendor.js"></script>
+  <script type="text/javascript" src="/main.js"></script>
+  {% endblock %}
+</body>
+</html>
+{% endblock %}

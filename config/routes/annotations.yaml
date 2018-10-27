@@ -1,0 +1,7 @@
+web:
+    resource: ../../src/Controller/Web
+    type: annotation
+
+api:
+    resource: ../../src/Controller/Api
+    type: annotation
