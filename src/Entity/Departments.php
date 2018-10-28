@@ -14,26 +14,20 @@ class Departments
 {
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        
     }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     * @SerializedName("id")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", name="name")
-     * @SerializedName("name")
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Users", mappedBy="department")
-     */
-    private $users;
 
     public function getName()
     {

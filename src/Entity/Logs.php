@@ -11,6 +11,11 @@ use App\Entity\Users;
  */
 class Logs
 {
+    public function __construct()
+    {
+        
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,7 +29,7 @@ class Logs
     private $time;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Users", inversedBy="logs")
+     * @ORM\ManyToOne(targetEntity="Users")
      */
     private $user;
 

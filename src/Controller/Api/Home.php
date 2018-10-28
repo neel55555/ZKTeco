@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Users;
+use App\Entity\Departments;
 use App\Entity\Logs;
 
 
@@ -75,9 +76,10 @@ class Home extends BaseController
         $departmentId = $request->query->get('department');
 
         $users = $em->getRepository(Users::Class)->findAll();
+        $department = $em->getRepository(Departments::Class)->findOneById($departmentId);
 
         if($departmentId){
-            $users = $em->getRepository(Users::Class)->findBy(["DEFAULTDEPTID"=>$departmentId]);
+            $users = $em->getRepository(Users::Class)->findBy(["department"=>$department]);
         };
         
         $data = $this->container->get('jms_serializer')->serialize($users, 'json');

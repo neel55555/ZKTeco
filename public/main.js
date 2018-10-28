@@ -249,7 +249,7 @@ var DepartmentsService = /** @class */ (function () {
         this.global = global;
     }
     DepartmentsService.prototype.getDepartments = function () {
-        return this.http.get(this.global.domain + '/api/departments');
+        return this.http.get(this.global.domain + '/api/department');
     };
     DepartmentsService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

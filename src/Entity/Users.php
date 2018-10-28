@@ -14,7 +14,6 @@ class Users
 {
     public function __construct()
     {
-        $this->department = new ArrayCollection();
         
     }
 
@@ -22,26 +21,18 @@ class Users
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer")
-     * @SerializedName("id")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string");
-     * @SerializedName("name")
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Departments", inversedBy="users")
-     * @SerializedName("department")
+     * @ORM\ManyToOne(targetEntity="Departments")
      */
     private $department;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Logs", mappedBy="user")
-     */
-    private $Logs;
 
     public function getId()
     {

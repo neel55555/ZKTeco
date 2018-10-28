@@ -11,10 +11,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use App\Entity\Departments as EntityDepartments;
 use App\Entity\Users;
 
-class Departments extends Controller
+class Department extends Controller
 {
     /**
-     * @Route("/api/departments")
+     * @Route("/api/department")
+     * @Method("GET")
      */
     public function departments()
     {

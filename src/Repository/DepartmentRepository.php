@@ -12,12 +12,4 @@ class DepartmentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Departments::class);
     }
-
-    public function findAllDepartment()
-    {
-        $sql = 'SELECT id, name FROM departments';
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
 }
