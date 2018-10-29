@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ahmedali5530/tad-php": "^1.0",
+        "guzzlehttp/guzzle": "~6.0",
         "jms/serializer": "^1.13",
         "jms/serializer-bundle": "^2.4",
         "koolphp/koolreport": "^2.78",
