@@ -31,12 +31,12 @@ class Devices
     /**
      * @ORM\Column(name="serial_number", type="string")
      */
-    private $serial_number;
+    private $serialNumber;
     
     /**
      * @ORM\Column(name="time_last_log", type="datetime")
      */
-    private $time_last_log;
+    private $timeLastLog;
 
     public function setIp($ip)
     {
@@ -50,11 +50,31 @@ class Devices
 
     public function setSerialNumber($serialNumber)
     {
-        $this->serial_number = $serialNumber;
+        $this->serialNumber = $serialNumber;
     }
 
     public function setTimeLastLog($timeLastLog)
     {
-        $this->time_last_log = $timeLastLog;
+        $this->timeLastLog = $timeLastLog;
+    }
+
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    public function getPort()
+    {
+        return $this->port;
+    }
+
+    public function getSerialNumber()
+    {
+        return $this->serialNumber;
+    }
+
+    public function getTimeLastLog()
+    {
+        return $this->timeLastLog;
     }
 }
