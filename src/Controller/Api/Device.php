@@ -23,17 +23,25 @@ class Device extends BaseController
     public function addDevice(Request $request)
     {
         
-        $form = $this->createFormBuilder(DeviceType::class)->getForm();
-        $form->submit(json_decode($request->getContent(), true));
+        $form = $this->createForm(DeviceType::class);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data);
 
-        if($form->isSubmitted && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
             $devices = $form->getData();
+            $devices->setTimeLastLog(new \DateTime($data['timeLastLog']));
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($devices);
             $em->flush();
+            
+            $response = new Response(json_encode([]));
+            $response->setStatusCode(Response::HTTP_CREATED);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
         };
 
-
+        
 
     }
 

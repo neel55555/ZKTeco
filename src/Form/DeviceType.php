@@ -14,8 +14,8 @@ class DeviceType extends AbstractType
     {
         $builder->add('ip')
         ->add('port')
-        ->add('serial_number')
-        ->add('time_last_log', DateTimeType::class);
+        ->add('serialNumber')
+        ->add('timeLastLog', DateTimeType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

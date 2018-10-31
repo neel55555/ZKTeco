@@ -68,6 +68,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "facebook/webdriver": {
+        "version": "1.6.0"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.3"
     },
@@ -146,6 +149,9 @@
             "ref": "c82bead70f9a4f656354a193df7bf0ca2114efa0"
         }
     },
+    "symfony/browser-kit": {
+        "version": "v4.1.6"
+    },
     "symfony/cache": {
         "version": "v4.1.0"
     },
@@ -161,6 +167,9 @@
             "ref": "e3868d2f4a5104f19f844fe551099a00c6562527"
         }
     },
+    "symfony/css-selector": {
+        "version": "v4.1.6"
+    },
     "symfony/debug": {
         "version": "v4.1.0"
     },
@@ -169,6 +178,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v4.1.0"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.1.6"
     },
     "symfony/dotenv": {
         "version": "v4.1.0"
@@ -224,6 +236,9 @@
     "symfony/orm-pack": {
         "version": "v1.0.5"
     },
+    "symfony/panther": {
+        "version": "v0.2.0"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.1",
         "recipe": {
@@ -242,6 +257,9 @@
     "symfony/polyfill-php72": {
         "version": "v1.8.0"
     },
+    "symfony/process": {
+        "version": "v4.1.6"
+    },
     "symfony/property-access": {
         "version": "v4.1.6"
     },
@@ -253,6 +271,9 @@
             "version": "4.0",
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
+    },
+    "symfony/test-pack": {
+        "version": "v1.0.4"
     },
     "symfony/twig-bridge": {
         "version": "v4.1.0"
