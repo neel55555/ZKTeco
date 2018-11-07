@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use app\Entity\Devices;
+use App\Entity\Devices;
 
 class DeviceRepository extends ServiceEntityRepository
 {

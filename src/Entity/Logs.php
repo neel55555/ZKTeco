@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Users;
+use App\Entity\Devices;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LogRepository")
@@ -33,6 +34,11 @@ class Logs
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Devices")
+     */
+    private $device;
+
     public function getId()
     {
         return $this->id;
@@ -51,5 +57,10 @@ class Logs
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function setDevice($device)
+    {
+        $this->device = $device;
     }
 }

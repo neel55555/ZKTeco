@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="DeviceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DeviceRepository")
  * @ORM\Table(name="devices")
  */
 class Devices
@@ -24,7 +24,7 @@ class Devices
     private $ip;
 
     /**
-     * @ORM\Column(name="port", type="string")
+     * @ORM\Column(name="port", type="integer")
      */
     private $port;
 

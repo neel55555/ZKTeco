@@ -20,7 +20,7 @@ class ZKLib extends Controller
     {
         error_reporting(0);
         ini_set('max_execution_time', 50);
-        $zk = new ZKLibrary('192.168.1.206', 4370);
+        $zk = new ZKLibrary('192.168.1.205', 4370);
         $ret = $zk->connect();
         if ( $ret ){
             
@@ -42,7 +42,7 @@ class ZKLib extends Controller
         
         error_reporting(0);
         ini_set('max_execution_time', 999999);
-        $zk = new ZKLibrary('192.168.1.206', 4370);
+        $zk = new ZKLibrary('192.168.1.205', 4370);
         $ret = $zk->connect();
         $data = $zk->getAttendance();
         $zk->disconnect();

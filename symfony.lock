@@ -131,6 +131,9 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
+    "royopa/fpdf-symfony2": {
+        "version": "3.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "4.0",
         "recipe": {
@@ -139,6 +142,15 @@
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
+    },
+    "setasign/fpdf": {
+        "version": "1.8.1"
+    },
+    "setasign/fpdi": {
+        "version": "1.6.2"
+    },
+    "setasign/fpdi-fpdf": {
+        "version": "1.6.2"
     },
     "symfony/apache-pack": {
         "version": "1.0",
