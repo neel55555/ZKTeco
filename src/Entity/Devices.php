@@ -58,6 +58,11 @@ class Devices
         $this->timeLastLog = $timeLastLog;
     }
 
+    public function getid()
+    {
+        return $this->id;
+    }
+
     public function getIp()
     {
         return $this->ip;

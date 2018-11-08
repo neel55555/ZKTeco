@@ -26,15 +26,14 @@ class Device extends BaseController
      */
     public function getData()
     {
+        
         $em = $this->getDoctrine()->getManager();
 
         //Fetching All Devices
         $devices = $em->getRepository(Devices::class)->findAll();
 
         //Fetching Last Insert Log Time
-        $qb = $em->createQueryBuilder();
-        $result = $qb->select('log.time')->from(Logs::class, 'log')->orderBy('log.id', 'DESC')->setMaxResults(1)->getQuery()->getResult();
-        $lastInsertTime = $result[0]['time'];
+        
 
         //Fetching Data From Devices
         
@@ -42,6 +41,11 @@ class Device extends BaseController
         ini_set('max_execution_time', 999999);
         foreach($devices as $device){
 
+            $qb = $em->createQueryBuilder();
+            $result = $qb->select('log.time')->from(Logs::class, 'log')->where('log.device =' . $device->getId())->orderBy('log.id', 'DESC')->setMaxResults(1)->getQuery()->getResult();
+            
+            $lastInsertTime = $result[0]['time'];
+            
             $zk = new ZKLibrary($device->getIp(), $device->getPort());
             $ret = $zk->connect();
             $data = $zk->getAttendance();
@@ -60,9 +64,14 @@ class Device extends BaseController
                 };
                 
             };
+            
         };
+        
 
-        $response = new Response('LOG CREATED SUCCESSFULLY');
+        $response = new Response(json_encode(["status"=>"SUCCESS"]), Response::HTTP_OK, [
+            "Content-Type"=>"application/json",
+            "Access-Control-Allow-Origin"=>"*"
+        ]);
         return $response;
     }
 

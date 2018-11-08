@@ -157,7 +157,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _user_user_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./user/user.component */ "./src/app/user/user.component.ts");
 /* harmony import */ var _single_user_single_user_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./single-user/single-user.component */ "./src/app/single-user/single-user.component.ts");
-/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "./node_modules/ngx-bootstrap/datepicker/index.js");
+/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "./node_modules/ngx-bootstrap/datepicker/fesm5/ngx-bootstrap-datepicker.js");
 /* harmony import */ var _report_report_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./report/report.component */ "./src/app/report/report.component.ts");
 /* harmony import */ var _device_device_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./device/device.component */ "./src/app/device/device.component.ts");
 /* harmony import */ var _global_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./global.service */ "./src/app/global.service.ts");
@@ -264,6 +264,58 @@ var DepartmentsService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/device.service.ts":
+/*!***********************************!*\
+  !*** ./src/app/device.service.ts ***!
+  \***********************************/
+/*! exports provided: DeviceService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeviceService", function() { return DeviceService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _global_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./global.service */ "./src/app/global.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var DeviceService = /** @class */ (function () {
+    function DeviceService(http, global) {
+        this.http = http;
+        this.global = global;
+    }
+    DeviceService.prototype.getDevices = function () {
+        var httpOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                'Accept': 'application/json',
+                'Authorization': 'my-auth-token'
+            })
+        };
+        return this.http.get(this.global.domain + '/api/device');
+    };
+    DeviceService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"], _global_service__WEBPACK_IMPORTED_MODULE_2__["GlobalService"]])
+    ], DeviceService);
+    return DeviceService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/device/device.component.css":
 /*!*********************************************!*\
   !*** ./src/app/device/device.component.css ***!
@@ -282,7 +334,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Content Wrapper. Contains page content -->\n<div class=\"content-wrapper\">\n  <!-- Content Header (Page header) -->\n  <section class=\"content-header\">\n    <div class=\"container-fluid\">\n      <div class=\"row mb-2\">\n        <div class=\"col-sm-6\">\n          <h1>Devices</h1>\n        </div>\n        <div class=\"col-sm-6\">\n          <ol class=\"breadcrumb float-sm-right\">\n            <li class=\"breadcrumb-item\"><a href=\"#\">Home</a></li>\n            <li class=\"breadcrumb-item active\">Devices</li>\n          </ol>\n        </div>\n      </div>\n    </div><!-- /.container-fluid -->\n  </section>\n\n  <!-- Main content -->\n  <section class=\"content\">\n    <div class=\"container-fluid\">\n      \n      <!-- /.row -->\n      <div class=\"row\">\n        <div class=\"col-12\">\n          <div class=\"card\">\n            <div class=\"card-header\">\n              <h3 class=\"card-title\">Devices List</h3>\n\n              \n            </div>\n            <!-- /.card-header -->\n            <div class=\"card-body table-responsive p-0\">\n              <table class=\"table table-bordered\">\n                <tr>\n                  <th>No.</th>\n                  <th>IP</th>\n                  <th>POST</th>\n                  <th>Serial Number</th>\n                </tr>\n                <tr>\n                  <td>1</td>\n                  <td>192.168.1.205</td>\n                  <td>4370</td>\n                  <td>XXXXXXX</td>\n                </tr>\n                <tr>\n                  <td>2</td>\n                  <td>192.168.1.206</td>\n                  <td>4370</td>\n                  <td>YYYYYYYY</td>\n                </tr>\n              </table>\n            </div>\n            <!-- /.card-body -->\n          </div>\n\n          <div class=\"card\">\n            <div class=\"card-body\">\n              <div class=\"form-group\">\n                  <label>IP mask:</label>\n\n                  <div class=\"input-group\">\n                    <div class=\"input-group-prepend\">\n                      <span class=\"input-group-text\"><i class=\"fa fa-laptop\"></i></span>\n                    </div>\n                    <input type=\"text\" class=\"form-control\" data-inputmask=\"'alias': 'ip'\" data-mask>\n                  </div>\n                  <!-- /.input group -->\n              </div>\n              <div class=\"form-group\">\n                <label>Port:</label>\n\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\"><i class=\"fa fa-laptop\"></i></span>\n                  </div>\n                  <input type=\"text\" class=\"form-control\" data-inputmask=\"'alias': 'digit'\" data-mask>\n                </div>\n                <!-- /.input group -->\n              </div>\n            </div>\n          </div>\n          <!-- /.card -->\n        </div>\n      </div><!-- /.row -->\n    </div><!-- /.container-fluid -->\n  </section>\n  <!-- /.content -->\n</div>\n<!-- /.content-wrapper -->"
+module.exports = "<!-- Content Wrapper. Contains page content -->\n<div class=\"content-wrapper\">\n  <!-- Content Header (Page header) -->\n  <section class=\"content-header\">\n    <div class=\"container-fluid\">\n      <div class=\"row mb-2\">\n        <div class=\"col-sm-6\">\n          <h1>Devices</h1>\n        </div>\n        <div class=\"col-sm-6\">\n          <ol class=\"breadcrumb float-sm-right\">\n            <li class=\"breadcrumb-item\"><a href=\"#\">Home</a></li>\n            <li class=\"breadcrumb-item active\">Devices</li>\n          </ol>\n        </div>\n      </div>\n    </div><!-- /.container-fluid -->\n  </section>\n\n  <!-- Main content -->\n  <section class=\"content\">\n    <div class=\"container-fluid\">\n      \n      <!-- /.row -->\n      <div class=\"row\">\n        <div class=\"col-12\">\n          <div class=\"card\">\n            <div class=\"card-header\">\n              <h3 class=\"card-title\">Devices List</h3>\n\n              \n            </div>\n            <!-- /.card-header -->\n            <div class=\"card-body table-responsive p-0\">\n              <table class=\"table table-bordered\">\n                <tr>\n                  <th>No.</th>\n                  <th>IP</th>\n                  <th>POST</th>\n                  <th>Serial Number</th>\n                </tr>\n                <tr *ngFor=\"let device of devices\">\n                  <td>1</td>\n                  <td>{{device.ip}}</td>\n                  <td>{{device.port}}</td>\n                  <td>{{device.serial_number}}</td>\n                </tr>\n              </table>\n            </div>\n            <!-- /.card-body -->\n          </div>\n\n          <div class=\"card\">\n            <div class=\"card-body\">\n              <div class=\"form-group\">\n                  <label>IP mask:</label>\n\n                  <div class=\"input-group\">\n                    <div class=\"input-group-prepend\">\n                      <span class=\"input-group-text\"><i class=\"fa fa-laptop\"></i></span>\n                    </div>\n                    <input type=\"text\" class=\"form-control\" data-inputmask=\"'alias': 'ip'\" data-mask>\n                  </div>\n                  <!-- /.input group -->\n              </div>\n              <div class=\"form-group\">\n                <label>Port:</label>\n\n                <div class=\"input-group\">\n                  <div class=\"input-group-prepend\">\n                    <span class=\"input-group-text\"><i class=\"fa fa-laptop\"></i></span>\n                  </div>\n                  <input type=\"text\" class=\"form-control\" data-inputmask=\"'alias': 'digit'\" data-mask>\n                </div>\n                <!-- /.input group -->\n              </div>\n            </div>\n          </div>\n          <!-- /.card -->\n        </div>\n      </div><!-- /.row -->\n    </div><!-- /.container-fluid -->\n  </section>\n  <!-- /.content -->\n</div>\n<!-- /.content-wrapper -->"
 
 /***/ }),
 
@@ -297,6 +349,7 @@ module.exports = "<!-- Content Wrapper. Contains page content -->\n<div class=\"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DeviceComponent", function() { return DeviceComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _device_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../device.service */ "./src/app/device.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -307,10 +360,14 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var DeviceComponent = /** @class */ (function () {
-    function DeviceComponent() {
+    function DeviceComponent(_deviceService) {
+        this._deviceService = _deviceService;
     }
     DeviceComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._deviceService.getDevices().subscribe(function (data) { return _this.devices = data; });
     };
     DeviceComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -318,7 +375,7 @@ var DeviceComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./device.component.html */ "./src/app/device/device.component.html"),
             styles: [__webpack_require__(/*! ./device.component.css */ "./src/app/device/device.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_device_service__WEBPACK_IMPORTED_MODULE_1__["DeviceService"]])
     ], DeviceComponent);
     return DeviceComponent;
 }());
@@ -528,12 +585,18 @@ var ReportService = /** @class */ (function () {
         this.selectedUser = 0;
     }
     ReportService.prototype.getReport = function () {
+        var httpOptions = {
+            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+                'Accept': 'application/json',
+                'Authorization': 'my-auth-token'
+            })
+        };
         var queryString = jquery__WEBPACK_IMPORTED_MODULE_2__["param"]({
             "date": this.selectedDate,
             "uid": this.selectedUser,
             "department": this.selectedDepartment
         });
-        return this.http.get(this.global.domain + '/api/user-log?' + queryString);
+        return this.http.get(this.global.domain + '/api/log?' + queryString);
     };
     ReportService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -638,6 +701,7 @@ var ReportComponent = /** @class */ (function () {
             this.userName = found.name;
         }
         ;
+        console.log(this.user);
         this._reportService.selectedDate = this.dateRange;
         this._reportService.selectedDepartment = this.department;
         this._reportService.selectedUser = this.user;
@@ -646,15 +710,13 @@ var ReportComponent = /** @class */ (function () {
     ReportComponent.prototype.onDateValueChange = function () {
         var _this = this;
         setTimeout(function () {
-            console.log("change detected");
-            var date1 = new Date(_this.date[0]);
-            var date2 = new Date(_this.date[1]);
-            date1.setMonth(date1.getMonth() + 1);
-            date2.setMonth(date2.getMonth() + 1);
-            var dateRangeFrom = date1.getDate() + '-' + date1.getMonth() + '-' + date1.getFullYear();
-            var dateRangeTo = date2.getDate() + '-' + date2.getMonth() + '-' + date2.getFullYear();
+            var date1 = _this.date[0];
+            var date2 = _this.date[1];
+            var month1 = date1.getMonth() + 1;
+            var month2 = date2.getMonth() + 1;
+            var dateRangeFrom = date1.getDate() + '-' + month1 + '-' + date1.getFullYear();
+            var dateRangeTo = date2.getDate() + '-' + month2 + '-' + date2.getFullYear();
             _this.dateRange = dateRangeFrom + '.' + dateRangeTo;
-            console.log(_this.dateRange);
             _this._reportService.selectedDate = _this.dateRange;
             _this._reportService.selectedDepartment = _this.department;
             _this._reportService.selectedUser = _this.user;
@@ -983,7 +1045,7 @@ var UserService = /** @class */ (function () {
         this.department = 0;
     }
     UserService.prototype.getUser = function () {
-        return this.http.get('/api/user');
+        return this.http.get(this.global.domain + '/api/user');
     };
     UserService.prototype.getUserByDept = function () {
         var queryString = jquery__WEBPACK_IMPORTED_MODULE_3__["param"]({
