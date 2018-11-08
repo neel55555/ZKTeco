@@ -31,11 +31,6 @@ class Device extends BaseController
 
         //Fetching All Devices
         $devices = $em->getRepository(Devices::class)->findAll();
-
-        //Fetching Last Insert Log Time
-        
-
-        //Fetching Data From Devices
         
         error_reporting(0);
         ini_set('max_execution_time', 999999);

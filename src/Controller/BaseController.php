@@ -15,10 +15,12 @@ class BaseController extends Controller
     {
         $data1 = [];
         
+        
         foreach($data as $row){
 
             foreach($row as $nextRow){
                 //ROW MANIPULATION FOR DATE TIME
+                $nextRow['status'] = "";
                 if(isset($nextRow['in_time'])){
                     $dateTime = new \DateTime($nextRow['in_time']);
                     $nextRow['in_time'] = $dateTime->format('g:iA');
@@ -77,26 +79,61 @@ class BaseController extends Controller
                     $nextRow['status'] = 'NORMAL';
                 };
 
-                $dateTime = new \DateTime($nextRow['date']);
-                $day_name = $dateTime->format('l');
+                $today = new \DateTime();
+                $date = new \DateTime($nextRow['date']);
 
-                $nextRow['date'] .= ' ' . $day_name;
+                if($date->format('d-m-Y') == $today->format('d-m-Y')){
+                    $nextRow['status'] = 'NO OUT TIME YET';
+                };
+
+                
+                $day_name = $date->format('l');
 
                 if($day_name == 'Friday'){
                     $nextRow['status'] = 'WEEKEND';
                 };
 
-                $today = new \DateTime();
-                $date = new \DateTime($nextRow['date']);
-                if($date>=$today){
-                    $nextRow['status'] = ' ';
-                };
+                $nextRow['date'] .= ' ' . $day_name;
+
+                
 
                 $data1[] = $nextRow;
             }
         };
 
         return $data1;
+    }
+
+    public function parseToHalJson($data)
+    {
+
+        $late = 0;
+        $early = 0;
+        $absent = 0;
+        $normal = 0;
+
+        foreach($data as $row){
+            $late = ($row['status'] == "LATE") ? $late+1 : $late;
+            $early = ($row['status'] == "EARLY") ? $early+1 : $early;
+            $absent = ($row['status'] == "ABSENT") ? $absent+1 : $absent;
+            $normal = ($row['status'] == "NORMAL") ? $normal+1 : $normal;
+        };
+        $halArray = [[
+            "_links"=> [
+                "self"=> [
+                    "href"=>""
+                ]
+            ],
+            "totalLate"=> $late,
+            "totalEarly"=> $early,
+            "totalAbsent"=> $absent,
+            "totalNormal"=>$normal,
+            "_embedded"=> [
+                "attendance"=> $data
+            ]
+        ]];
+
+        return $this->get('jms_serializer')->serialize($halArray, 'json');
     }
 
     

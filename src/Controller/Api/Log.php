@@ -60,20 +60,16 @@ class Log extends BaseController
             };
         };
         
-
         $log = $this->parseAttData($log);
-
-        
-        
 
         //dump($request->getAcceptableContentTypes());
         if($request->getAcceptableContentTypes() == ''){
             
         };
         
-        $singleUserMonthlyLogJSON = $this->get('jms_serializer')->serialize($log, 'json');
-        $response = new Response($singleUserMonthlyLogJSON, Response::HTTP_OK, ["Access-Control-Allow-Origin"=>"*"]);
-        $response->headers->set('Content-Type','application/json');
+        $halLogData = $this->parseTohalJson($log);
+        $response = new Response($halLogData, Response::HTTP_OK, ["Access-Control-Allow-Origin"=>"*"]);
+        $response->headers->set('Content-Type','application/hal+json');
 
         if(false){
             $pdf = new PDF();
