@@ -295,16 +295,13 @@ var DeviceService = /** @class */ (function () {
         this.global = global;
     }
     DeviceService.prototype.getDevices = function () {
-        var httpOptions = {
-            headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
-                'Accept': 'application/json',
-                'Authorization': 'my-auth-token'
-            })
-        };
         return this.http.get(this.global.domain + '/api/device');
     };
     DeviceService.prototype.getDeviceData = function () {
-        return this.http.get(this.global.domain + '/api/device/get-data');
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+            'Accept': 'application/json'
+        });
+        return this.http.get(this.global.domain + '/api/device/get-data', { "headers": headers });
     };
     DeviceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -384,17 +381,21 @@ var DeviceComponent = /** @class */ (function () {
         ;
         this.isDataProcessing = true;
         this.isLoaderHidden = false;
-        this._deviceService.getDeviceData().subscribe(function (data) {
-            if (data.status == 'SUCCESS') {
-                _this.buttonInnerContent = '<i class="fa fa-check fa-2x"></i>';
-                _this.isLoaderHidden = true;
-                setTimeout(function () {
-                    _this.buttonInnerContent = "GET DATA";
-                    _this.isDataProcessing = false;
-                }, 3000);
-            }
-            ;
-        });
+        //BUG FIX FOR FAILED REQUEST
+        var request = setInterval(function () {
+            _this._deviceService.getDeviceData().subscribe(function (data) {
+                if (data.status == 'SUCCESS') {
+                    clearInterval(request);
+                    _this.buttonInnerContent = '<i class="fa fa-check fa-2x"></i>';
+                    _this.isLoaderHidden = true;
+                    setTimeout(function () {
+                        _this.buttonInnerContent = "GET DATA";
+                        _this.isDataProcessing = false;
+                    }, 3000);
+                }
+                ;
+            });
+        }, 1000);
     };
     DeviceComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -610,6 +611,7 @@ var ReportService = /** @class */ (function () {
         this.selectedDate = '';
         this.selectedDepartment = 0;
         this.selectedUser = 0;
+        this.downloadUri = "";
     }
     ReportService.prototype.getReport = function () {
         var httpOptions = {
@@ -623,7 +625,16 @@ var ReportService = /** @class */ (function () {
             "uid": this.selectedUser,
             "department": this.selectedDepartment
         });
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+            'Accept': 'application/pdf'
+        });
         return this.http.get(this.global.domain + '/api/log?' + queryString);
+    };
+    ReportService.prototype.getFile = function () {
+        var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
+            'Accept': 'application/pdf'
+        });
+        return this.http.get(this.global.domain + this.downloadUri, { "headers": headers });
     };
     ReportService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -656,7 +667,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Content Wrapper. Contains page content -->\r\n<div class=\"content-wrapper\">\r\n  <!-- Content Header (Page header) -->\r\n  <section class=\"content-header\">\r\n    <div class=\"container-fluid\">\r\n      <div class=\"row mb-2\">\r\n        <div class=\"col-sm-6\">\r\n          <h1>Report</h1>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n          <ol class=\"breadcrumb float-sm-right\">\r\n            <li class=\"breadcrumb-item\"><a href=\"#\">Home</a></li>\r\n            <li class=\"breadcrumb-item active\">Report</li>\r\n          </ol>\r\n        </div>\r\n      </div>\r\n    </div><!-- /.container-fluid -->\r\n  </section>\r\n\r\n  <!-- Main content -->\r\n  <section class=\"content\">\r\n    <div class=\"container-fluid\">\r\n      <!-- /.row -->\r\n      <div class=\"row\">\r\n        <div class=\"col-12\">\r\n          <div class=\"card\">\r\n            <div class=\"card-header\">\r\n              \r\n                <form class=\"form-inline pull-right\">\r\n\r\n                  \r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <select [(ngModel)]=\"department\" (change)=\"onDepartmentChange()\" name=\"department\" class=\"form-control\">\r\n                        <option value=\"0\">All Departments</option>\r\n                        <option *ngFor=\"let department of departments\" value=\"{{department.id}}\">{{department.name}}</option>\r\n                      </select>\r\n                    </div>\r\n                  </div>\r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <select name=\"user\" [(ngModel)]=\"user\" class=\"form-control\" (change)=\"onUserChange()\">\r\n                          <option value=\"0\">All Employees</option>\r\n                          <option *ngFor=\"let user of users\" value=\"{{user.id}}\">{{user.name}}</option>\r\n                      </select>\r\n                    </div>\r\n                  </div>\r\n                  \r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <input readonly type=\"text\" name=\"date\" [maxDate]=\"maxDate\" #drp=\"bsDaterangepicker\" bsDaterangepicker [(ngModel)]=\"date\" (bsValueChange)=\"onDateValueChange()\" [bsConfig]=\"{ rangeInputFormat: 'DD/MM/YYYY' }\"  class=\"form-control float-right\" placeholder=\"Date\" autocomplete=\"off\">\r\n                      <div class=\"input-group-append\">\r\n                        <button type=\"submit\" (click)=\"drp.toggle()\" class=\"btn btn-default\"><i class=\"fa fa-calendar\"></i></button>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\">\r\n                      <button class=\"btn btn-success btn-sm\" style=\"width: 200px\">DOWNLOAD AS PDF</button>\r\n                    </div>\r\n                  </div>\r\n                  \r\n                </form>\r\n              \r\n            </div>\r\n            <!-- /.card-header -->\r\n            <div class=\"card-body table-responsive p-0\">\r\n              <table class=\"table table-bordered\">\r\n                <tr>\r\n                  \r\n                  <th>Date</th>\r\n                  <th>Name</th>\r\n                  <th>Department</th>\r\n                  <th>In time</th>\r\n                  <th>Out time</th>\r\n                  <th>Status</th>\r\n                </tr>\r\n                <tr *ngFor=\"let report of reports; index as SLN\">\r\n                  \r\n                  <td>{{report.date}}</td>\r\n                  <td>{{report.name}}</td>\r\n                  <td>{{report.department_name}}</td>\r\n                  <td>{{report.in_time}}</td>\r\n                  <td>{{report.out_time}}</td>\r\n                  <td>\r\n                    <span class=\"badge badge-success\" *ngIf=\"(report.status=='NORMAL')\">{{report.status}}</span>\r\n                    <span class=\"badge badge-danger\" *ngIf=\"(report.status=='ABSENT')\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='LATE'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='LATE AND EARLY'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='EARLY'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-success\" *ngIf=\"report.status=='WEEKEND'\">{{report.status}}</span>\r\n                  </td>\r\n                </tr>\r\n                \r\n              </table>\r\n            </div>\r\n            <!-- /.card-body -->\r\n          </div>\r\n          <!-- /.card -->\r\n        </div>\r\n      </div><!-- /.row -->\r\n    </div><!-- /.container-fluid -->\r\n  </section>\r\n  <!-- /.content -->\r\n</div>\r\n<!-- /.content-wrapper -->"
+module.exports = "<!-- Content Wrapper. Contains page content -->\r\n<div class=\"content-wrapper\">\r\n  <!-- Content Header (Page header) -->\r\n  <section class=\"content-header\">\r\n    <div class=\"container-fluid\">\r\n      <div class=\"row mb-2\">\r\n        <div class=\"col-sm-6\">\r\n          <h1>Report</h1>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n          <ol class=\"breadcrumb float-sm-right\">\r\n            <li class=\"breadcrumb-item\"><a href=\"#\">Home</a></li>\r\n            <li class=\"breadcrumb-item active\">Report</li>\r\n          </ol>\r\n        </div>\r\n      </div>\r\n    </div><!-- /.container-fluid -->\r\n  </section>\r\n\r\n  <!-- Main content -->\r\n  <section class=\"content\">\r\n    <div class=\"container-fluid\">\r\n      <!-- /.row -->\r\n      <div class=\"row\">\r\n        <div class=\"col-12\">\r\n          <div class=\"card\">\r\n            <div class=\"card-header\">\r\n              \r\n                <form class=\"form-inline pull-right\">\r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <select [(ngModel)]=\"department\" (change)=\"onDepartmentChange()\" name=\"department\" class=\"form-control\">\r\n                        <option value=\"0\">All Departments</option>\r\n                        <option *ngFor=\"let department of departments\" value=\"{{department.id}}\">{{department.name}}</option>\r\n                      </select>\r\n                    </div>\r\n                  </div>\r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <select name=\"user\" [(ngModel)]=\"user\" class=\"form-control\" (change)=\"onUserChange()\">\r\n                          <option value=\"0\">All Employees</option>\r\n                          <option *ngFor=\"let user of users\" value=\"{{user.id}}\">{{user.name}}</option>\r\n                      </select>\r\n                    </div>\r\n                  </div>\r\n                  \r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\" style=\"width: 205px;\">\r\n                      <input readonly type=\"text\" name=\"date\" [maxDate]=\"maxDate\" #drp=\"bsDaterangepicker\" bsDaterangepicker [(ngModel)]=\"date\" (bsValueChange)=\"onDateValueChange()\" [bsConfig]=\"{ rangeInputFormat: 'DD/MM/YYYY' }\"  class=\"form-control float-right\" placeholder=\"Date\" autocomplete=\"off\">\r\n                      <div class=\"input-group-append\">\r\n                        <button type=\"submit\" (click)=\"drp.toggle()\" class=\"btn btn-default\"><i class=\"fa fa-calendar\"></i></button>\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n\r\n                  <div class=\"form-group mx-sm-2 mb-2\">\r\n                    <div class=\"input-group input-group-sm\">\r\n                      <a [href]=\"downloadUri\" class=\"btn btn-success btn-sm btn-200\">DOWNLOAD AS PDF</a>\r\n                    </div>\r\n                  </div>\r\n                  \r\n                </form>\r\n              \r\n            </div>\r\n            <!-- /.card-header -->\r\n            <div class=\"card-body table-responsive p-0\">\r\n              <table class=\"table table-bordered\">\r\n                <tr>\r\n                  \r\n                  <th>Date</th>\r\n                  <th>Name</th>\r\n                  <th>Department</th>\r\n                  <th>In time</th>\r\n                  <th>Out time</th>\r\n                  <th>Status</th>\r\n                </tr>\r\n                <tr *ngFor=\"let report of reports; index as SLN\">\r\n                  \r\n                  <td>{{report.date}}</td>\r\n                  <td>{{report.name}}</td>\r\n                  <td>{{report.department_name}}</td>\r\n                  <td>{{report.in_time}}</td>\r\n                  <td>{{report.out_time}}</td>\r\n                  <td>\r\n                    <span class=\"badge badge-success\" *ngIf=\"(report.status=='NORMAL')\">{{report.status}}</span>\r\n                    <span class=\"badge badge-danger\" *ngIf=\"(report.status=='ABSENT')\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='LATE'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='LATE AND EARLY'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-warning\" *ngIf=\"report.status=='EARLY'\">{{report.status}}</span>\r\n                    <span class=\"badge badge-success\" *ngIf=\"report.status=='WEEKEND'\">{{report.status}}</span>\r\n                  </td>\r\n                </tr>\r\n                \r\n              </table>\r\n            </div>\r\n            <!-- /.card-body -->\r\n          </div>\r\n          <!-- /.card -->\r\n        </div>\r\n      </div><!-- /.row -->\r\n    </div><!-- /.container-fluid -->\r\n  </section>\r\n  <!-- /.content -->\r\n</div>\r\n<!-- /.content-wrapper -->"
 
 /***/ }),
 
@@ -674,6 +685,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _departments_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../departments.service */ "./src/app/departments.service.ts");
 /* harmony import */ var _user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../user.service */ "./src/app/user.service.ts");
 /* harmony import */ var _report_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../report.service */ "./src/app/report.service.ts");
+/* harmony import */ var _global_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../global.service */ "./src/app/global.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -687,11 +699,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ReportComponent = /** @class */ (function () {
-    function ReportComponent(_departmentsService, _userService, _reportService) {
+    function ReportComponent(_departmentsService, _userService, _reportService, global) {
         this._departmentsService = _departmentsService;
         this._userService = _userService;
         this._reportService = _reportService;
+        this.global = global;
         this.dateTime = new Date();
         this.date = [new Date(), new Date()];
         this.dateRange = '';
@@ -702,6 +716,8 @@ var ReportComponent = /** @class */ (function () {
         this.userName = 'Select a user';
         this.reports = [];
         this.maxDate = new Date();
+        this.downloadUri = '';
+        this.downloadName = 'Attendance.pdf';
     }
     ReportComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -715,7 +731,10 @@ var ReportComponent = /** @class */ (function () {
         this._reportService.selectedDate = this.dateRange;
         this._reportService.selectedDepartment = this.department;
         this._reportService.selectedUser = this.user;
-        this._reportService.getReport().subscribe(function (data) { return _this.reports = data[0]._embedded.attendance; });
+        this._reportService.getReport().subscribe(function (data) {
+            _this.reports = data[0]._embedded.attendance;
+            _this.downloadUri = _this.global.domain + data[0]._links.download.pdf.href;
+        });
     };
     ReportComponent.prototype.onUserChange = function () {
         var _this = this;
@@ -732,7 +751,10 @@ var ReportComponent = /** @class */ (function () {
         this._reportService.selectedDate = this.dateRange;
         this._reportService.selectedDepartment = this.department;
         this._reportService.selectedUser = this.user;
-        this._reportService.getReport().subscribe(function (data) { return _this.reports = data[0]._embedded.attendance; });
+        this._reportService.getReport().subscribe(function (data) {
+            _this.reports = data[0]._embedded.attendance;
+            _this.downloadUri = _this.global.domain + data[0]._links.download.pdf.href;
+        });
     };
     ReportComponent.prototype.onDateValueChange = function () {
         var _this = this;
@@ -747,7 +769,10 @@ var ReportComponent = /** @class */ (function () {
             _this._reportService.selectedDate = _this.dateRange;
             _this._reportService.selectedDepartment = _this.department;
             _this._reportService.selectedUser = _this.user;
-            _this._reportService.getReport().subscribe(function (data) { return _this.reports = data[0]._embedded.attendance; });
+            _this._reportService.getReport().subscribe(function (data) {
+                _this.reports = data[0]._embedded.attendance;
+                _this.downloadUri = _this.global.domain + data[0]._links.download.pdf.href;
+            });
         }, 300);
     };
     ReportComponent = __decorate([
@@ -756,7 +781,7 @@ var ReportComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./report.component.html */ "./src/app/report/report.component.html"),
             styles: [__webpack_require__(/*! ./report.component.css */ "./src/app/report/report.component.css")]
         }),
-        __metadata("design:paramtypes", [_departments_service__WEBPACK_IMPORTED_MODULE_1__["DepartmentsService"], _user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"], _report_service__WEBPACK_IMPORTED_MODULE_3__["ReportService"]])
+        __metadata("design:paramtypes", [_departments_service__WEBPACK_IMPORTED_MODULE_1__["DepartmentsService"], _user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"], _report_service__WEBPACK_IMPORTED_MODULE_3__["ReportService"], _global_service__WEBPACK_IMPORTED_MODULE_4__["GlobalService"]])
     ], ReportComponent);
     return ReportComponent;
 }());

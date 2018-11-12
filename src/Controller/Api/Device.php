@@ -33,41 +33,42 @@ class Device extends BaseController
         $devices = $em->getRepository(Devices::class)->findAll();
         
         error_reporting(0);
-        ini_set('max_execution_time', 999999);
+        ini_set('max_execution_time', 10);
         foreach($devices as $device){
-
-            $qb = $em->createQueryBuilder();
-            $result = $qb->select('log.time')->from(Logs::class, 'log')->where('log.device =' . $device->getId())->orderBy('log.id', 'DESC')->setMaxResults(1)->getQuery()->getResult();
-            
-            $lastInsertTime = $result[0]['time'];
-            
+            //GETTING DATA FROM DEVICE
             $zk = new ZKLibrary($device->getIp(), $device->getPort());
             $ret = $zk->connect();
             $data = $zk->getAttendance();
             $zk->disconnect();
-
+            //QUERY FOR LAST INSERTED LOG
+            $qb = $em->createQueryBuilder();
+            $result = $qb->select('log.time')->from(Logs::class, 'log')->where('log.device =' . $device->getId())->orderBy('log.id', 'DESC')->setMaxResults(1)->getQuery()->getResult();
+            $lastInsertTime = $result[0]['time'];
+            //INSERT UPDATED DATA INTO DATABASE
             foreach($data as $row){
                 $dateToInsert = new \DateTime($row[3]);
+                
                 if($dateToInsert > $lastInsertTime){
-                    $user = $em->getRepository(Users::class)->findOneBy(array('id'=>$row[1]));
+                    $user = $em->getRepository(Users::class)->findOneBy(['id'=>$row[1]]);
                     $log = new Logs();
                     $log->setTime(new \DateTime($row[3]));
                     $log->setUser($user);
                     $log->setdevice($device);
                     $em->persist($log);
                     $em->flush();
+                    
                 };
-                
             };
-            
         };
         
-
+        
         $response = new Response(json_encode(["status"=>"SUCCESS"]), Response::HTTP_OK, [
             "Content-Type"=>"application/json",
             "Access-Control-Allow-Origin"=>"*"
         ]);
         return $response;
+        
+        
     }
 
     /**
