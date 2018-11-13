@@ -42,11 +42,12 @@ class Home extends Controller
      */
     public function report()
     {
+        
         return $this->render('home.html.twig');
     }
 
     /**
-     * @Route("/device", name="report")
+     * @Route("/device", name="device")
      */
     public function device()
     {

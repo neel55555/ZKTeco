@@ -94,7 +94,7 @@ class BaseController extends Controller
                 $today = new \DateTime();
                 $date = new \DateTime($nextRow['date']);
 
-                if($date->format('d-m-Y') == $today->format('d-m-Y')){
+                if(($date->format('d-m-Y') == $today->format('d-m-Y')) AND ($in_time === $out_time)){
                     $nextRow['status'] = 'NO OUT TIME YET';
                 };
 
