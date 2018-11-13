@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Shifts
 {
+    public function __construct()
+    {
+        
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,7 +27,17 @@ class Shifts
     private $name;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=512)
      */
     private $shift;
+
+    public function getShift()
+    {
+        return $this->shift;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -34,6 +34,11 @@ class Users
      */
     private $department;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Shifts")
+     */
+    private $shift;
+
     public function getId()
     {
         return $this->id;
@@ -49,4 +54,8 @@ class Users
         return $this->department;
     }
 
+    public function getShift()
+    {
+        return $this->shift;
+    }
 }

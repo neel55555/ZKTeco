@@ -43,7 +43,6 @@ class Log extends BaseController
 
         $dateRangeTo = new \DateTime($dateRangeTo);
         $dateRangeTo->add(new \DateInterval('P1D'));
-        
         $period = new \DatePeriod(new \DateTime($dateRangeFrom), new \DateInterval('P1D'), $dateRangeTo);
 
         foreach($period as $k=>$v){

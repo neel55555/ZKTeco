@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\Users;
 
 class BaseController extends Controller
 {
@@ -14,11 +15,13 @@ class BaseController extends Controller
     public function parseAttData(array $data)
     {
         $data1 = [];
-        
+        $em = $this->getDoctrine()->getManager();
         
         foreach($data as $row){
 
             foreach($row as $nextRow){
+                
+                
                 //ROW MANIPULATION FOR DATE TIME
                 $nextRow['status'] = "";
                 
@@ -42,8 +45,16 @@ class BaseController extends Controller
                 };
 
                 //STATUS ASSIGNING======================================
-                $office_start_time = new \DateTime('10:00AM');
-                $office_end_time = new \DateTime('6:00PM');
+                $user = $em->getRepository(Users::class)->findOneById($nextRow['user_id']);
+                $shift = json_decode($user->getShift()->getShift(), true);
+                
+                $date = new \DateTime($nextRow['date']);
+                $day = strtolower($date->format('l'));
+                $start = $shift[0][$day]['start'];
+                $end = $shift[0][$day]['end'];
+
+                $office_start_time = new \DateTime($start);
+                $office_end_time = new \DateTime($end);
                 
                 if($nextRow['in_time'] != 'NO IN TIME'){
                     
