@@ -27,9 +27,16 @@ class Log extends BaseController
         $requestUri = $request->getRequestUri();
         $em = $this->getDoctrine()->getManager();
         $_date = $request->query->get('date');
-        $_badgenumber = $request->query->get('uid');
+        $_userId = $request->query->get('uid');
         $_department = $request->query->get('department');
         $LogRepo = $em->getRepository(Logs::class);
+        $userRepo = $em->getRepository(Users::class);
+
+        if($_department){
+
+        };
+
+        
 
         if(empty($_date)){
             $dateTime = new \DateTime('now');
@@ -38,7 +45,7 @@ class Log extends BaseController
 
         list($dateRangeFrom, $dateRangeTo) = explode('.', str_replace(' ', '', $_date));
         
-        $log = array();
+        $attendance = array();
         $allDates = [];
 
         $dateRangeTo = new \DateTime($dateRangeTo);
@@ -51,17 +58,17 @@ class Log extends BaseController
 
         $singleUserMonthlyLog = [];
         
-        $badgenumbers = $LogRepo->findAllBadgenumber($_department, $_badgenumber);
+        $userIds = $userRepo->findAllUserId($_department, $_userId);
         
         foreach ($allDates as $singleDate) {
-            foreach($badgenumbers as $badgenumber){
-                $singleLog = $LogRepo->findOneInOut($badgenumber['id'], $singleDate);
+            foreach($userIds as $userId){
+                $singleLog = $LogRepo->findOneInOut($userId['id'], $singleDate);
                 $singleLog[0]['date'] = $singleDate;
-                $log[] = $singleLog;
+                $attendance[] = $singleLog;
             };
         };
         
-        $log = $this->parseAttData($log);
+        $attendance = $this->parseAttData($attendance);
 
         //Send json
 
@@ -70,14 +77,14 @@ class Log extends BaseController
             "self" => $requestUri, 
             "pdf" => $requestUri . '&accept=pdf'
         ];
-        $halLogData = $this->parseTohalJson($log, $uris);
-        $response = new Response($halLogData, Response::HTTP_OK, ["Access-Control-Allow-Origin"=>"*"]);
+        $halAttendanceData = $this->parseTohalJson($attendance, $uris);
+        $response = new Response($halAttendanceData, Response::HTTP_OK, ["Access-Control-Allow-Origin"=>"*"]);
         $response->headers->set('Content-Type','application/hal+json');
 
         //Send pdf file
         if($request->query->get('accept') == 'pdf'){
             $pdf = new PDF();
-            $pdf->setData($log);
+            $pdf->setData($halAttendanceData);
             $pdf->basicTable();
             $output = $pdf->Output('S');
             $response = new Response($output, Response::HTTP_OK);

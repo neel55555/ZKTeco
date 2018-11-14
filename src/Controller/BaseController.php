@@ -22,32 +22,42 @@ class BaseController extends Controller
             foreach($row as $nextRow){
                 
                 
-                //ROW MANIPULATION FOR DATE TIME
+                //SETTING STATUS TO EMPTY
                 $nextRow['status'] = "";
                 
+                //ROW MANIPULATION FOR DATE TIME
+
+                //IN TIME TO TIME ONLY
                 if(isset($nextRow['in_time'])){
                     $dateTime = new \DateTime($nextRow['in_time']);
                     $nextRow['in_time'] = $dateTime->format('g:iA');
                 };
+
+                //OUT TIME TO TIME ONLY
                 if(isset($nextRow['out_time'])){
                     $dateTime1 = new \DateTime($nextRow['out_time']);
                     $nextRow['out_time'] = $dateTime1->format('g:iA');
                 };
 
+                //IF INTIME OR OUT TIME NOT DEFINED
                 $in_time = (isset($nextRow['in_time'])) ? $nextRow['in_time'] : 'NO IN TIME';
                 $out_time = (isset($nextRow['out_time'])) ? $nextRow['out_time'] : 'NO OUT TIME';
                 
+                //SETTING IN TIME AND OUT TIME TO ARRAY
                 $nextRow['in_time'] = $in_time;
                 $nextRow['out_time'] = $out_time;
-
+                //ASSIGNING OUT TIME TO "NO OUT TIME"
+                //IN TIME AND OUT TIME WILL ALWAYS BE EQUAL IF THERE IS ONLY ONE PUNCH
                 if($in_time === $out_time){
                     $nextRow['out_time'] = 'NO OUT TIME';
                 };
 
                 //STATUS ASSIGNING======================================
+                //GETTING SHIFT SETTINGS FOR SPECIFIC USER
                 $user = $em->getRepository(Users::class)->findOneById($nextRow['user_id']);
                 $shift = json_decode($user->getShift()->getShift(), true);
                 
+                //MATCHING SHIFT DAYS TO DEFINE LATE OR EARLY
                 $date = new \DateTime($nextRow['date']);
                 $day = strtolower($date->format('l'));
                 $start = $shift[0][$day]['start'];
@@ -73,7 +83,7 @@ class BaseController extends Controller
                         $nextRow['status'] = 'EARLY';
                     };
                 };
-
+                //ASSINGING STATUS LATE AND EARLY
                 if(($nextRow['in_time'] != 'NO IN TIME') AND ($nextRow['out_time'] != 'NO OUT TIME')){
                     $checkin_time = new \DateTime($nextRow['in_time']);
                     $checkout_time = new \DateTime($nextRow['out_time']);
@@ -82,21 +92,19 @@ class BaseController extends Controller
                         $nextRow['status'] = 'LATE AND EARLY';
                     };
                 };
-
+                //ASSINGING STATUS ABSENT
                 if(($nextRow['in_time'] == 'NO IN TIME') AND ($nextRow['out_time'] == 'NO OUT TIME')){
                     $nextRow['status'] = 'ABSENT';
                 };
-
+                //ASSINGING STATUS NORMAL
                 if(($nextRow['in_time'] != 'NO IN TIME') AND ($nextRow['out_time'] != 'NO OUT TIME') AND ($checkin_time <= $office_start_time) AND ($checkout_time >= $office_end_time)){
                     $nextRow['status'] = 'NORMAL';
                 };
-
+                
                 $today = new \DateTime();
                 $date = new \DateTime($nextRow['date']);
 
-                if(($date->format('d-m-Y') == $today->format('d-m-Y')) AND ($in_time === $out_time)){
-                    $nextRow['status'] = 'NO OUT TIME YET';
-                };
+                
 
                 
                 $day_name = $date->format('l');
@@ -104,10 +112,6 @@ class BaseController extends Controller
                 if($day_name == 'Friday'){
                     $nextRow['status'] = 'WEEKEND';
                 };
-
-                $nextRow['date'] .= ' ' . $day_name;
-
-                
 
                 $data1[] = $nextRow;
             }
