@@ -62,6 +62,7 @@ class BaseController extends Controller
                 $day = strtolower($date->format('l'));
                 $start = $shift[0][$day]['start'];
                 $end = $shift[0][$day]['end'];
+                $weekend = $shift[0][$day]['weekend'];
 
                 $office_start_time = new \DateTime($start);
                 $office_end_time = new \DateTime($end);
@@ -109,7 +110,7 @@ class BaseController extends Controller
                 
                 $day_name = $date->format('l');
 
-                if($day_name == 'Friday'){
+                if($weekend){
                     $nextRow['status'] = 'WEEKEND';
                 };
 
